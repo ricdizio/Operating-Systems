@@ -5,56 +5,50 @@
 #include "hash.h"
 #include "linkedList.h"
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
 int main(int argc, char *argv[]) {
-
+	
+	//Tamaño tabla
     HashTable_t *ht = ht_create(101);
     
-    /* Probadno la tabla de hash */
-    
-    //insert 
+    ht_insert(ht, "coco", "A Blessing and a Fessing");
+    ht_insert(ht, "Avengers: Infinity War", "cancion y");
+    ht_insert(ht, "Moana", "cancion j");
+    ht_insert(ht, "coco", "Cave Dwelling on the Past");
+    ht_insert(ht, "Avengers: Infinity War", "End Credits");
+    ht_insert(ht, "coco", "Cave Dwelling on the Past");
+    ht_insert(ht, "Avengers: Infinity War", "End Credits");
 
-    ht_insert(ht, "pelicula 1", "cancion x");
-    ht_insert(ht, "pelicula 2", "cancion y");
-    ht_insert(ht, "pelicula 3", "cancion z");
 
 	// printf table
 	
-    printf("%s\n", ht_index(ht, "pelicula 1"));
-    printf("%s\n", ht_index(ht, "pelicula 2"));
-    printf("%s\n", ht_index(ht, "pelicula 3"));
+	//Esto retorna un linkedList
+    List * lOne = ht_index(ht, "coco");
     
-    //Limpiamos la tabla
+    printf("-----Pelicula coco-------");
+    
+    //imprimimos
+    display(lOne,16);
+    
+    //Esto retorna un linkedList
+    List * lTwo = ht_index(ht, "Avengers: Infinity War");
+    
+    printf("-----Pelicula Avengers: Infinity War-------");
+    
+    //imprimimos
+    display(lTwo,16);
+    
+    //Esto retorna un linkedList
+    List * lTree = ht_index(ht, "Moana");
+    
+    printf("-----Pelicula Moana-------");
+    
+    //imprimimos
+    display(lTree,16);
     
     ht_free(ht);
-    
-    /* Probando la lista */
-    
-    //Creamos lista
-    List * list = emptylist();
-    
-    //Add
-	add("cancion 1", list);
-	add("cancion 2", list);
-	add("cancion 3", list);
-	
-	//show
-	display(list);
-	
-	//delete
-	delete("cancion 1", list);
-	
-	//show
-	display(list);
-	
-	//reversed
-	reverse(list);
-	printf("Reversed: ");
-	display(list);
-	
-	//limpiamos lista
-	destroy(list);
+  
+	system("pause");
 	return 0;
+	
 }
 

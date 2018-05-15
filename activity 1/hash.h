@@ -4,6 +4,8 @@ hashing algorithm: hashval = *s + 31 * hashval
 resolves collisions using linked lists
 */
 
+#include "linkedList.h"
+
 #ifndef HASH
 #define HASH
 
@@ -11,7 +13,7 @@ typedef struct TableEntry /* hashtab entry */
 {
     struct TableEntry *next;
     char *key;
-    char *val;
+    List *val;
 } TableEntry_t;
 
 typedef struct HashTable
@@ -31,7 +33,7 @@ HashTable_t *ht_create(size_t size);
 void ht_free(HashTable_t *ht);
 
 /* retrive value from key */
-char *ht_index(HashTable_t *ht, char *k);
+List *ht_index(HashTable_t *ht, char *k);
 
 /* resizes hashtable, returns new hashtable and frees old*/
 HashTable_t *ht_resize(HashTable_t *oht, size_t size);

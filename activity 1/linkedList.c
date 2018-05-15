@@ -15,11 +15,14 @@ List * emptylist(){
   return list;
 }
 
-void display(List * list) {
+void display(List * list, int limit) {
+  int counter = 0;
+  int exit = 1;
   Node * current = list->head;
   if(list->head == NULL) 
     return;
-  while(current->next != NULL){
+  while(current->next != NULL && (counter!=(limit-1))){
+  	counter++;
     printf("%s,", current->data);
     current = current->next;
   }
@@ -78,6 +81,42 @@ void destroy(List * list){
     current = next;
   }
   free(list);
+}
+
+int already(List * list, char *element){
+
+
+	int exist = 0;
+
+	Node * current = list->head;
+	if(list->head == NULL) 
+		return;
+
+	if(strcmp(current->data, element) == 0) {
+
+		//first compare
+		exist = 1;
+		return exist;
+	}
+	while(current->next != NULL ){
+	
+		if(strcmp(current->data, element) == 0) {
+			exist = 1;
+			return exist;
+			
+		}
+		
+		current = current->next;
+	}
+	
+	if(strcmp(current->data, element) == 0) {
+
+		//last compare
+		exist = 1;
+		return exist;
+	}
+	
+	return exist;
 }
 
 

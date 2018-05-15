@@ -16,8 +16,9 @@ typedef struct list {
 List * emptylist();
 void add(char *data, List * list);
 void delete(char *data, List * list);
-void display(List * list);
+void display(List * list, int limit);
 void reverse(List * list);
 void destroy(List * list);
+int already(List * list, char * element);
 
 #endif

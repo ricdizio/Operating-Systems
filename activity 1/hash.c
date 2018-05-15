@@ -40,8 +40,13 @@ TableEntry_t *new(char *k, char *v)
         return NULL;
     if ((te->key = strdup(k)) == NULL)
         return NULL;
-    if ((te->val = strdup(v)) == NULL)
-        return NULL;
+        
+    //create a Empty List
+    te->val = emptylist();
+    
+    //add element to the list
+    add (v,te->val);
+
     te->next = NULL;
     return te;
 }
@@ -58,29 +63,55 @@ TableEntry_t *lookup(HashTable_t *ht, char *k)
 
 /* inserts the key-val pair */
 TableEntry_t *ht_insert(HashTable_t *ht, char *k, char *v)
+
 {
-    TableEntry_t *te;
-    /* unique entry */
-    if ((te = lookup(ht, k)) == NULL)
-    {
-        te = new(k, v);
-        unsigned hashval = hash(ht, k);
+	TableEntry_t *te;
+	
+	if( lookup(ht, k) == NULL )
+	{
+
+		te = new(k,v);
+		
+		unsigned hashval = hash(ht, k);
+		 
         /* insert at beginning of linked list */
         te->next = ht->tab[hashval]; 
         ht->tab[hashval] = te;
-    }
-    /* replace val of previous entry */
-    else
-    {
-        free(te->val);
-        if ((te->val = strdup(v)) == NULL)
-            return NULL;
-    }
-    return te;
+
+	}
+	
+	else
+	{	
+
+		// For resize
+		if (v == NULL) return NULL;
+
+		//Strutc
+		te = lookup(ht, k);
+		
+		//Buscamos la lista
+		List *l = te->val;
+
+		
+		if(already(l,v)) {
+			return NULL;
+		}
+			
+		else{	
+			//Agremamos el valor a la lista
+
+			add(v, l);
+		}
+
+		
+	}
+	
+	return te;
+
 }
 
 /* retrive value from key */
-char *ht_index(HashTable_t *ht, char *k)
+List *ht_index(HashTable_t *ht, char *k)
 {
     TableEntry_t *te;
     if ((te = lookup(ht, k)) == NULL)
@@ -120,10 +151,27 @@ HashTable_t *ht_resize(HashTable_t *oht, size_t size)
     TableEntry_t *te;
     /* loop through hashtable */
     for (i = 0; i < oht->size; i++)
+    {
+	
         /* loop through linked list */
         for (te = oht->tab[i]; te != NULL; te = te->next)
-            if (ht_insert(nht, te->key, te->val) == NULL)
-                return NULL;
-    ht_free(oht);
-    return nht;
+        {
+    		List * list = te->val;
+  			Node * current = list->head;
+  			
+  			if(list->head == NULL) /*pass*/;
+  			
+  			else{
+  				
+  				while(current->next != NULL){
+    				
+    				if (ht_insert(nht, te->key, current->data) == NULL) return NULL;
+    				ht_free(oht);
+    				return nht;
+    				current = current->next;
+    				
+    			}
+			}
+		}
+	}
 }
