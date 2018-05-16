@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*Estructura de datos*/
 #include "hash.h"
 #include "linkedList.h"
 
+#define true 1
 int main(int argc, char *argv[]) {
 	int lenPelicula = 1024;
 	int lenCancion = 1024;
@@ -14,10 +16,11 @@ int main(int argc, char *argv[]) {
 	while(true){
 
 		printf("%s\n","Introduzca el nombre de la pelicula:");
-		char *texto;
-		scanf("%s", &texto);
+		char texto [lenPelicula];
+  	scanf("%s", texto);
+		printf("Esto es texto: %s\n", texto);
 
-		if(texto.compare("---")==0){
+		if(strcmp(texto, "---")==0){
 			while(true){
 				int num;
 				printf("%s\n","Configuracion de busqueda:\n\n\
@@ -66,29 +69,53 @@ int main(int argc, char *argv[]) {
 			}
 
 		}
-
+	printf("%s\n", "Ya pase por config");
 	//Tabla
-			HashTable_t *ht = ht_create(eficiencia);
-			char linea[(lenPelicula+lenCancion+4)];
-			FILE *archivo;
-			archivo = fopen(argv[0],"r")
-			while(fgets(linea,(lenPelicula+lenCancion+4),(FILE*) archivo)){
-				char *token = strtok(linea,"\t");
-				int i=0;
-				while(token!=NULL){
-					if(i==0){
-						char cancion[lenCancion]=token;
-						token = strtok(NULL,"\t");
-						i=1;
-					}
-					if(i==1){
-						char pelicula[lenPelicula]=token;
-						token = strtok(NULL,"\t");
-						break;
-					}
+	char *cancion;
+	cancion = (char *)malloc(sizeof(char)*lenCancion);
+	printf("%s\n", "Ya cree cancion");
+	printf("%s\n", cancion);
+	char *pelicula;
+	pelicula = (char *)malloc(sizeof(char)*lenPelicula);
+	printf("%s\n", "Ya cree pelicula");
+	printf("%s\n", pelicula);
+	HashTable_t *ht = ht_create(eficiencia);
+	char linea[(lenPelicula+lenCancion+4)];
+	FILE *archivo;
+	printf("%s\n", "Archivo listo");
+	archivo = fopen(argv[0],"r");
+	printf("%s\n", "Archivo ABIERTO");
+	while(fgets(linea,(lenPelicula+lenCancion+4),archivo)!=NULL){
+		printf("%s\n", "Entre al while");
+		printf(" linea: %s\n", linea);
+		char *token = strtok(linea,"\t");
+		unsigned i=0;
+		unsigned j=0;
+		while(token!=NULL){
+			if(i==0){
+				token = strtok(NULL,"\t");
+				for(j=0;j<lenCancion;j++){
+					cancion[j]=token[j];
+					printf("%c", cancion[j]);
+
 				}
-				ht_insert(ht, pelicula, cancion);
+				printf("\n");
+				i=1;
 			}
+			if(i==1){
+				token = strtok(NULL,"\t");
+				for(j=0;j<lenPelicula;j++){
+					pelicula[j]=token[j];
+					printf("%c", cancion[j]);
+
+				}
+
+				break;
+			}
+		}
+		printf("%s\n", cancion);
+		//ht_insert(ht, pelicula, cancion);
+	}
 
 
 		// printf table
